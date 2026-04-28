@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Pra Karol ❤️</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
 body {
     margin: 0;
@@ -13,58 +15,82 @@ body {
     justify-content: center;
     align-items: center;
     font-family: Arial;
-    color: white;
     overflow: hidden;
+    color: white;
 }
 
-/* CONTAINER */
-.container {
-    text-align: center;
-}
-
-/* BOTÃO */
-.botao {
-    padding: 25px 45px;
-    border: 3px solid #ff4d6d;
-    font-size: 28px;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.botao:hover {
+/* ENVELOPE */
+.envelope {
+    width: 220px;
+    height: 140px;
     background: #ff4d6d;
-    color: black;
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 0 25px #ff4d6d;
+    transition: 0.6s;
+}
+
+.envelope::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-left: 110px solid transparent;
+    border-right: 110px solid transparent;
+    border-bottom: 80px solid #ff2e55;
+    transition: 0.6s;
+    transform-origin: top;
+}
+
+.envelope.aberto {
+    transform: translateY(-70px) scale(0.8);
+    opacity: 0;
 }
 
 /* CARTA */
 #carta {
     display: none;
-    margin-top: 30px;
+    text-align: center;
+    max-width: 800px;
+    padding: 30px;
+
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+
+    animation: aparecer 1s ease forwards;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* FOTO */
 img {
-    width: 320px;
-    height: 320px;
+    width: 300px;
+    height: 300px;
     border-radius: 50%;
     border: 4px solid #ff4d6d;
     box-shadow: 0 0 25px #ff4d6d;
     object-fit: cover;
+    margin-bottom: 10px;
 }
 
-/* TEXTO */
+/* TEXTO ESTILO CARTA */
 #texto {
-    font-size: 32px;
-    margin-top: 20px;
-    min-height: 60px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 34px;
+    line-height: 1.8;
+    white-space: pre-line;
+    margin-top: 10px;
 }
 
-/* ❤️ coração batendo */
+/* ❤️ coração */
 .heart {
-    font-size: 40px;
+    font-size: 42px;
     animation: pulse 1s infinite;
-    display: inline-block;
 }
 
 @keyframes pulse {
@@ -73,12 +99,12 @@ img {
     100% { transform: scale(1); }
 }
 
-/* 🌧️ corações caindo */
+/* corações caindo */
 .heart-fall {
     position: absolute;
     top: -50px;
     color: #ff4d6d;
-    font-size: 22px;
+    font-size: 20px;
     animation: fall linear forwards;
 }
 
@@ -93,89 +119,39 @@ img {
 
 <body>
 
-<div class="container">
+<div class="envelope" id="envelope" onclick="abrir()"></div>
 
-    <div class="botao" onclick="abrir()">💌 Toque aqui</div>
+<div id="carta">
+    <img src="foto.png">
+    <div class="heart">❤️</div>
 
-    <div id="carta">
-        <img src="foto.png">
-        <div class="heart">❤️</div>
-        <p id="texto"></p>
+    <div id="texto">
+já faz um tempo… mas ainda parece tudo recente na minha cabeça.  
+
+mesmo depois de tudo o que aconteceu entre nós…  
+
+eu ainda te carrego nos meus pensamentos.  
+
+existem sentimentos que o tempo não apaga…  
+
+Karol… você marcou a minha história ❤️  
+
+
+Depois que te conheci, eu entendi o que era amar de verdade.  
+Mesmo com tudo o que aconteceu entre nós, eu nunca deixei de te amar…  
+
+Eu errei, eu pensei, eu amadureci.  
+Hoje eu só queria seu perdão… e a chance de recomeçar tudo com você.  
+
+Porque, no fundo… ainda é você.
     </div>
-
-    <audio id="music">
-        <source src="musica.mp3" type="audio/mpeg">
-    </audio>
-
 </div>
 
 <script>
-let iniciado = false;
+let aberto = false;
 
 function abrir() {
-    if (iniciado) return;
-    iniciado = true;
+    if (aberto) return;
+    aberto = true;
 
-    document.getElementById("carta").style.display = "block";
-
-    document.getElementById("music").play().catch(() => {});
-
-    chuvaCoracoes();
-
-    const frases = [
-        "faz tempo né...",
-        "mesmo depois de tudo...",
-        "eu percebi uma coisa...",
-        "tem coisas que não passam...",
-        "Karol ❤️"
-    ];
-
-    let i = 0;
-    const texto = document.getElementById("texto");
-
-    function digitar() {
-        if (i < frases.length) {
-            let frase = frases[i];
-            texto.innerHTML = "";
-            let j = 0;
-
-            function escrever() {
-                if (j < frase.length) {
-                    texto.innerHTML += frase[j];
-                    j++;
-                    setTimeout(escrever, 80); // efeito digitação
-                } else {
-                    i++;
-                    setTimeout(digitar, 4000); // mais lento entre frases
-                }
-            }
-
-            escrever();
-        }
-    }
-
-    digitar();
-}
-
-/* 🌧️ chuva de corações */
-function chuvaCoracoes() {
-    setInterval(() => {
-        const heart = document.createElement("div");
-        heart.innerHTML = "❤️";
-        heart.classList.add("heart-fall");
-
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (3 + Math.random() * 3) + "s";
-
-        document.body.appendChild(heart);
-
-        setTimeout(() => {
-            heart.remove();
-        }, 6000);
-
-    }, 300);
-}
-</script>
-
-</body>
-</html>
+    const
