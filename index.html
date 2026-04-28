@@ -1,14 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Pra Karol ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    background: linear-gradient(black, #1a0010);
+    font-family: Arial;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Envelope */
+.envelope {
+    width: 300px;
+    height: 200px;
+    background: #111;
+    margin: 100px auto;
+    position: relative;
+    cursor: pointer;
+    border: 2px solid #ff4d6d;
+}
+
+.envelope::before {
+    content: "";
+    position: absolute;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 100px solid #ff4d6d;
+    top: -100px;
+    left: 0;
+    transition: 1s;
+}
+
+.envelope.open::before {
+    transform: rotateX(180deg);
+}
+
+/* Carta */
+.carta {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: 1s;
+}
+
+.carta.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Foto */
+.foto {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ff4d6d;
+    box-shadow: 0 0 25px #ff4d6d;
+}
+
+/* Texto */
+.frase {
+    margin-top: 20px;
+    font-size: 22px;
+    max-width: 320px;
+    margin: 20px auto;
+    min-height: 140px;
+    opacity: 0;
+    transition: 1s;
+}
+
+.frase.show {
+    opacity: 1;
+}
+
+.nome {
+    font-size: 30px;
+    color: #ff4d6d;
+    text-shadow: 0 0 15px #ff4d6d;
+}
+</style>
+</head>
+
 <body>
 
-<h1 onclick="teste()">CLIQUE AQUI</h1>
+<div class="envelope" id="envelope"></div>
+
+<div class="carta" id="carta">
+    <img src="foto.png" class="foto">
+    <div class="frase" id="frase"></div>
+</div>
+
+<audio id="music">
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-function teste() {
-  alert("FUNCIONOU");
-}
-</script>
+const frases = [
+    "faz tempo né...",
+    "mesmo depois de anos sem a gente se falar...",
+    "eu percebi uma coisa...",
+    "tem sentimento que não vai embora...",
+    "porque no fundo...",
+    "<span class='nome'>Karol ❤️</span>"
+];
 
-</body>
-</html>
+let iniciado = false;
+
+document.getElementById("envelope").addEventListener("click", () => {
+    if (iniciado) return;
+    iniciado = true;
+
+    document.getElementById("envelope").classList.add("open");
+
+    setTimeout(() => {
+        document.getElementById("carta").classList.add("show");
+        iniciarTexto();
+    }, 1000);
+
+    const music = document.getElementById("music
+                                        
