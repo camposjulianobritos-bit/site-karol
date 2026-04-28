@@ -8,42 +8,172 @@
 body {
     margin: 0;
     height: 100vh;
-    background: black;
+    background: radial-gradient(circle, #1a1a1a, black);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
     font-family: Arial;
+    color: white;
+    overflow: hidden;
 }
 
-.box {
+/* CONTAINER */
+.container {
     text-align: center;
 }
 
-button {
-    padding: 20px;
-    font-size: 20px;
-    border: none;
-    border-radius: 10px;
+/* BOTÃO */
+.botao {
+    padding: 25px 45px;
+    border: 3px solid #ff4d6d;
+    font-size: 28px;
+    border-radius: 15px;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.botao:hover {
+    background: #ff4d6d;
+    color: black;
+}
+
+/* CARTA */
+#carta {
+    display: none;
+    margin-top: 30px;
+}
+
+/* FOTO */
+img {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 4px solid #ff4d6d;
+    box-shadow: 0 0 25px #ff4d6d;
+    object-fit: cover;
+}
+
+/* TEXTO */
+#texto {
+    font-size: 32px;
+    margin-top: 20px;
+    min-height: 60px;
+}
+
+/* ❤️ coração batendo */
+.heart {
+    font-size: 40px;
+    animation: pulse 1s infinite;
+    display: inline-block;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+/* 🌧️ corações caindo */
+.heart-fall {
+    position: absolute;
+    top: -50px;
+    color: #ff4d6d;
+    font-size: 22px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh);
+        opacity: 0;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
-    <button onclick="abrir()">Abrir 💌</button>
+<div class="container">
 
-    <div id="carta" style="display:none; margin-top:20px;">
-        <h1>Funcionou ✔</h1>
-        <p>Se isso aparecer, seu site está ok.</p>
+    <div class="botao" onclick="abrir()">💌 Toque aqui</div>
+
+    <div id="carta">
+        <img src="foto.png">
+        <div class="heart">❤️</div>
+        <p id="texto"></p>
     </div>
+
+    <audio id="music">
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
 </div>
 
 <script>
+let iniciado = false;
+
 function abrir() {
+    if (iniciado) return;
+    iniciado = true;
+
     document.getElementById("carta").style.display = "block";
+
+    document.getElementById("music").play().catch(() => {});
+
+    chuvaCoracoes();
+
+    const frases = [
+        "faz tempo né...",
+        "mesmo depois de tudo...",
+        "eu percebi uma coisa...",
+        "tem coisas que não passam...",
+        "Karol ❤️"
+    ];
+
+    let i = 0;
+    const texto = document.getElementById("texto");
+
+    function digitar() {
+        if (i < frases.length) {
+            let frase = frases[i];
+            texto.innerHTML = "";
+            let j = 0;
+
+            function escrever() {
+                if (j < frase.length) {
+                    texto.innerHTML += frase[j];
+                    j++;
+                    setTimeout(escrever, 80); // efeito digitação
+                } else {
+                    i++;
+                    setTimeout(digitar, 4000); // mais lento entre frases
+                }
+            }
+
+            escrever();
+        }
+    }
+
+    digitar();
+}
+
+/* 🌧️ chuva de corações */
+function chuvaCoracoes() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.innerHTML = "❤️";
+        heart.classList.add("heart-fall");
+
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 6000);
+
+    }, 300);
 }
 </script>
 
