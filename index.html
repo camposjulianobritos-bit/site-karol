@@ -20,18 +20,14 @@ body {
 }
 
 /* ENVELOPE */
-.envelope {
+#envelope {
     width: 220px;
     height: 140px;
     background: #ff4d6d;
     border-radius: 8px;
     box-shadow: 0 0 20px #ff4d6d;
     cursor: pointer;
-    position: relative;
-}
-
-.envelope:active {
-    transform: scale(0.97);
+    display: block;
 }
 
 /* CARTA */
@@ -49,7 +45,6 @@ img {
     border-radius: 50%;
     border: 4px solid #ff4d6d;
     object-fit: cover;
-    box-shadow: 0 0 25px #ff4d6d;
 }
 
 /* TEXTO */
@@ -63,20 +58,13 @@ img {
 /* coração */
 .heart {
     font-size: 40px;
-    animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.3); }
-    100% { transform: scale(1); }
 }
 </style>
 </head>
 
 <body>
 
-<div class="envelope" id="envelope" onclick="abrir()"></div>
+<div id="envelope" onclick="abrir()"></div>
 
 <div id="carta">
     <img src="foto.png">
@@ -101,20 +89,23 @@ Porque, no fundo… ainda é você.
     </div>
 </div>
 
-<!-- 🎵 MÚSICA (FORMA QUE FUNCIONA NO GITHUB) -->
+<!-- música -->
 <audio id="music">
     <source src="musica.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 function abrir() {
-    document.getElementById("envelope").style.display = "none";
-    document.getElementById("carta").style.display = "block";
+    const envelope = document.getElementById("envelope");
+    const carta = document.getElementById("carta");
+
+    envelope.style.display = "none";
+    carta.style.display = "block";
 
     const music = document.getElementById("music");
-    music.currentTime = 0;
+    music.play().catch(() => {});
+}
+</script>
 
-    const playPromise = music.play();
-
-    if (playPromise !== undefined) {
-        play
+</body>
+</html>
